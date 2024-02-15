@@ -82,7 +82,6 @@ const RegisterPage = () => {
                           </a>
                           <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
                             Have an account?{" "}
-                            {/* <a Link="/login" style={{ color: "#393f81" }}> */}
                               <Link to="/login" style={{ color: "#393f81" }}>
                                 Login now
                               </Link>
