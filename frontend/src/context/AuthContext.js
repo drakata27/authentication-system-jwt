@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import {createContext, useState, useEffect} from 'react'
-import jwt_decode from 'jwt-decode'
+import {jwtDecode} from 'jwt-decode'
 import {useNavigate} from 'react-router-dom'
 
 
@@ -8,24 +7,17 @@ const AuthContext = createContext()
 export default AuthContext
 
 export const AuthProvider = ({ children }) => {
-    const [authTokens, setAuthTokens] = useState(() => {
-        // return localStorage.getItem("authTokens") //check if return is used correct
-        //     ? JSON.parse(localStorage.setItem('authTokens')) 
-        //     : null 
-        if(localStorage.getItem("authTokens")) {
-            JSON.parse(localStorage.setItem('authTokens')) 
-        }
-    })
+    const [authTokens, setAuthTokens] = useState(() => 
+        localStorage.getItem("authTokens")
+            ? JSON.parse(localStorage.setItem('authTokens')) 
+            : null 
+    )
 
-    const [user, setUser] = useState(()=> {
-        // localStorage.getItem("authTokens")
-        //     ? jwt_decode(localStorage.getItem("authTokens"))
-        //     : null
-
-        if (localStorage.getItem("authTokens")) {
-            jwt_decode(localStorage.getItem("authTokens"))
-        }
-    })
+    const [user, setUser] = useState(()=> 
+        localStorage.getItem("authTokens")
+            ? jwtDecode(localStorage.getItem("authTokens"))
+            : null
+    )
 
     const [loading, setLoading] = useState(true)
 
@@ -46,7 +38,7 @@ export const AuthProvider = ({ children }) => {
         if (response.status===200){
             console.log('Logged in');
             setAuthTokens(data)
-            setUser(jwt_decode(data.access))
+            setUser(jwtDecode(data.access))
             localStorage.setItem("authTokens", JSON.stringify(data))
             navigate('/')
         } else {
@@ -91,7 +83,7 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(()=> {
         if(authTokens){
-            setUser(jwt_decode(authTokens.access))
+            setUser(jwtDecode(authTokens.access))
         }
         setLoading(false)
     }, [authTokens, loading])
