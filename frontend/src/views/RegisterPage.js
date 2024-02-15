@@ -1,7 +1,21 @@
-import React from 'react'
+import React, {useState, useContext} from 'react'
 import {Link} from 'react-router-dom'
+import AuthContext from '../context/AuthContext'
+
 
 const RegisterPage = () => {
+  const {registerUser} = useContext(AuthContext)
+
+  const [email, setEmail] = useState("")
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [password2, setPassword2] = useState("")
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    registerUser(email, username, password, password2)
+  }
+
   return (
     <div>
       <>
@@ -21,7 +35,7 @@ const RegisterPage = () => {
                     </div>
                     <div className="col-md-6 col-lg-7 d-flex align-items-center">
                       <div className="card-body p-4 p-lg-5 text-black">
-                        <form>
+                        <form onSubmit={handleSubmit}>
                           <div className="d-flex align-items-center mb-3 pb-1">
                             <i
                               className="fas fa-cubes fa-2x me-3"
@@ -43,6 +57,7 @@ const RegisterPage = () => {
                               id="form2Example17"
                               className="form-control form-control-lg"
                               placeholder="Email Address"
+                              onChange={e => setEmail(e.target.value)}
                             />
                           </div>
                           <div className="form-outline mb-4">
@@ -51,6 +66,7 @@ const RegisterPage = () => {
                               id="form2Example17"
                               className="form-control form-control-lg"
                               placeholder="Username"
+                              onChange={e => setUsername(e.target.value)}
                             />
                           </div>
                           <div className="form-outline mb-4">
@@ -59,6 +75,7 @@ const RegisterPage = () => {
                               id="form2Example17"
                               className="form-control form-control-lg"
                               placeholder="Password"
+                              onChange={e => setPassword(e.target.value)}
                             />
                           </div>
                           <div className="form-outline mb-4">
@@ -67,12 +84,13 @@ const RegisterPage = () => {
                               id="form2Example27"
                               className="form-control form-control-lg"
                               placeholder="Confirm Password"
+                              onChange={e => setPassword2(e.target.value)}
                             />
                           </div>
                           <div className="pt-1 mb-4">
                             <button
                               className="btn btn-dark btn-lg btn-block"
-                              type="button"
+                              type="submit"
                             >
                               Register
                             </button>
