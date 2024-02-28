@@ -1,7 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import {useContext, } from 'react'
+import {jwtDecode} from 'jwt-decode'
+import AuthContext from '../context/AuthContext'
+import {Link} from 'react-router-dom'
 
 const Navbar = () => {
+  const {user, logoutUser} = useContext(AuthContext)
+  const token = localStorage.getItem("authTokens")
+
+  if (token) {
+    const decoded = jwtDecode(token)
+    var user_id = decoded.user_id
+  }
+
   return (
     <div>
         <nav className="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
@@ -18,15 +29,28 @@ const Navbar = () => {
               <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#">Home</a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Features</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">Pricing</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link disabled">Disabled</a>
-              </li>
+              { token === null && 
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to='/login'>Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" href="/register">Register</Link>
+                </li>
+              </>
+              }
+
+              { token !== null && 
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to='/dashboard' style={{cursor:"pointer"}}>Dashboard</Link>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" onClick={logoutUser} style={{cursor:"pointer"}}>Logout</a>
+                  </li>
+                </>
+              }
+
             </ul>
           </div>
         </div>
