@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import {useContext, useState, useEffect} from 'react'
 import AuthContext from '../context/AuthContext'
@@ -22,6 +23,32 @@ const Dashboard = () => {
     full_name = decode.full_name
     image = decode.image
   }
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+        const response = await api.get("/dashboard/")
+        setRes(response.data.response)
+      } catch (error) {
+        console.log(error);
+        setRes("Something went wrong")
+      }
+    }
+    fetchData()
+  }, [api])
+  
+  useEffect(()=>{
+    const fetchPostData = async () => {
+      try {
+        const response = await api.post("/dashboard/")
+        setRes(response.data.response)
+      } catch (error) {
+        console.log(error);
+        setRes("Something went wrong")
+      }
+    }
+    fetchPostData()
+  }, [api])
 
   return (
     <div>
@@ -139,6 +166,9 @@ const Dashboard = () => {
           </div>
         </div>
         <canvas className="my-4" id="myChart" width={900} height={380} />
+        <div className='alert alert-success'>
+          <strong>{res}</strong>
+        </div>
         <h2>Section title</h2>
         <div className="table-responsive">
           <table className="table table-striped table-sm">
